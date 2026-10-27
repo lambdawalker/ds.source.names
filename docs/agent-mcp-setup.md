@@ -1,6 +1,6 @@
 # Agent MCP setup
 
-All five implemented source clients and the research database service expose stdio MCP servers. Build each checkout using Node.js 24+ and `npm ci`; no npm publication is required.
+All six implemented source clients and the research database service expose stdio MCP servers. Build each checkout using Node.js 24+ and `npm ci`; no npm publication is required.
 
 | Repository | Compiled server | Agent tools | Server configuration |
 |---|---|---|---|
@@ -8,9 +8,9 @@ All five implemented source clients and the research database service expose std
 | names.api.wikidata | `dist/mcp-stdio.js` | `search_names`, `get_entity`, `get_bearers` | `WIKIDATA_USER_AGENT`: application name and contact URL |
 | names.api.behindthename | `dist/mcp-stdio.js` | `lookup_name`, `related_names` | `BEHINDTHENAME_API_KEY` |
 | names.data.statistics | `dist/mcp-stdio.js` | `ibge_frequency`, `ibge_ranking`, `list_datasets`, `query_dataset` | Optional `STATISTICS_DATASETS` mapping for completed SSA/INSEE imports |
-| names.api.etymology-explorer | `dist/mcp-stdio.js` | `autocomplete`, `get_details`, `get_connections`, `get_trees`, `get_kin`, `get_progeny`, `get_connected_progeny`, `get_connection_details`, `random_etymology` | No provider token; default staging API |\n| names.research.store | `dist/mcp.js` | Validated reads/writes: findings, source documents, fragments, cache, forms, graph traversals and research tasks | Running HTTP service, `STORE_API_URL`, `STORE_API_TOKEN`; Neo4j required for traversal/projection |
+| names.api.etymology-explorer | `dist/mcp-stdio.js` | `autocomplete`, `get_details`, `get_connections`, `get_trees`, `get_kin`, `get_progeny`, `get_connected_progeny`, `get_connection_details`, `random_etymology` | No provider token; default staging API |\n| names.api.wikimedia-enterprise | `dist/mcp-stdio.js` | 14 read-only metadata, article, snapshot/chunk and HEAD-inspection tools | Private `WIKIMEDIA_ENTERPRISE_CREDENTIAL`: access token or refresh bundle; managed setup recommended |\n| names.research.store | `dist/mcp.js` | Validated reads/writes: findings, source documents, fragments, cache, forms, graph traversals and research tasks | Running HTTP service, `STORE_API_URL`, `STORE_API_TOKEN`; Neo4j required for traversal/projection |
 
-Wikimedia Enterprise remains an unimplemented placeholder repository and is not a working MCP source. Etymology Explorer staging autocomplete/details/connections/trees were independently verified without a provider token. Its nine data reads return bounded JSON chunks with source URLs, timestamps and stable continuation snapshots. The optional demographics client has not been implemented.
+Wikimedia Enterprise is implemented; provider authentication is required. Etymology Explorer staging autocomplete/details/connections/trees were independently verified without a provider token. Its nine data reads return bounded JSON chunks with source URLs, timestamps and stable continuation snapshots. The optional demographics client has not been implemented.
 
 ## Host configuration
 
@@ -37,7 +37,7 @@ Replace `/repos` with your local parent folder. Windows paths may use forward sl
       "command": "node",
       "args": ["--env-file=/repos/names.data.statistics/.env", "/repos/names.data.statistics/dist/mcp-stdio.js"]
     },
-    "etymology-explorer": {\n      "command": "node",\n      "args": ["/repos/names.api.etymology-explorer/dist/mcp-stdio.js"]\n    },\n    "research-store": {
+    "etymology-explorer": {\n      "command": "node",\n      "args": ["/repos/names.api.etymology-explorer/dist/mcp-stdio.js"]\n    },\n    "wikimedia-enterprise": {\n      "command": "node",\n      "args": ["/repos/names.api.wikimedia-enterprise/dist/mcp-stdio.js"]\n    },\n    "research-store": {
       "command": "node",
       "args": ["--env-file=/repos/names.research.store/.env", "/repos/names.research.store/dist/mcp.js"]
     }
@@ -49,7 +49,7 @@ Behind the Name's ignored `.env` contains its API key. Statistics requires no se
 
 The database HTTP process must already be running (`npm start` from its checkout). Launching its MCP process does not start another database writer or replace the HTTP service. MCP source servers are read-only; the storage MCP additionally supports validated writes. No unrestricted SQL, Cypher, shell or arbitrary-fetch tool is exposed.
 
-## Managed local services\n\nThe orchestrator can launch the database and all five source clients on YAML-configured loopback ports (4318–4323). It unlocks its encrypted vault via a startup passphrase and privately seeds credentials through authenticated memory-only endpoints. Etymology Explorer needs no provider vault entry. Its authenticated local API and `mcp:remote` bridge remain available for supervising agent hosts. See the [local services guide](https://github.com/lambdawalker/ds.names.orchestrator/blob/main/docs/local-services.md).\n\n## SSA and INSEE access
+## Managed local services\n\nThe orchestrator can launch the database and all six source clients on YAML-configured loopback ports (4318–4324; Enterprise is opt-in). It unlocks its encrypted vault via a startup passphrase and privately seeds credentials through authenticated memory-only endpoints. Etymology Explorer needs no provider vault entry. Its authenticated local API and `mcp:remote` bridge remain available for supervising agent hosts. See the [local services guide](https://github.com/lambdawalker/ds.names.orchestrator/blob/main/docs/local-services.md).\n\n## SSA and INSEE access
 
 Use the statistics CLI to create completed name-filtered JSONL imports, following [its setup instructions](https://github.com/lambdawalker/names.data.statistics/blob/main/docs/setup.md). In the statistics `.env`, configure:
 
@@ -74,4 +74,4 @@ These are reusable MCP servers for an agent host. Registering all of them does n
 Each implemented source has actual MCP protocol tests. The database has a real stdio-to-authenticated-HTTP/SQLite write/read test. Statistics tests cover completed local imports, hash/receipt checks, pagination, snapshot changes and byte limits. CI verifies code contracts without depending on provider availability.
 
 Behind the Name live validation still needs your local API key. IBGE live validation remains pending after HTTP 503 responses. Wiktionary/Wikidata public source lookups do not require provider API keys; the configured application/contact identifiers are still required by these clients. Database authentication is independent of provider credentials.
-\nEtymology Explorer preserves provider confidence/deployment/frequency fields as evidence rather than treating them as verified historical facts or population statistics. Reuse rights remain unknown; storage defaults to metadata-only. Pronunciation media and error-list operations are outside this initial research adapter.\n
+\nEtymology Explorer preserves provider confidence/deployment/frequency fields as evidence rather than treating them as verified historical facts or population statistics. Reuse rights remain unknown; storage defaults to metadata-only. Pronunciation media and error-list operations are outside this initial research adapter.\n\n## Wikimedia Enterprise credentials\n\nBuild its sibling checkout, then run `npm run vault:enterprise-login` in the orchestrator. The hidden terminal flow saves only the returned access/refresh bundle in the encrypted vault, not the account password. Enable its service entry to use port 4324. The client refreshes access tokens in memory; a raw access token can instead be seeded with `vault:set -- wikimedia-enterprise`, but cannot renew itself. Provider account validation remains a local setup check; CI uses synthetic credentials.\n\nStandalone MCP hosts must privately set `WIKIMEDIA_ENTERPRISE_CREDENTIAL` for that process (never model-visible arguments). The JSON example above intentionally contains no secret. Model tools cannot log in, revoke tokens, choose URLs/paths, extract archives or start bulk downloads. Use explicit library/CLI snapshot downloads with selected limits. Article evidence preserves source project/title/revision/license and does not establish a parsed lexical root.\n

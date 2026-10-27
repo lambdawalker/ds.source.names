@@ -4,9 +4,9 @@ Evidence-based research on personal-name origins, historical forms, borrowing,
 notable bearers and population usage. TypeScript libraries will expose source
 data to a DeepSeek Harness orchestrator using a local model.
 
-**Current status:** Wiktionary, Wikidata, Behind the Name and official statistics clients are implemented, alongside the research storage service and the root-research runner in [ds.names.orchestrator](https://github.com/lambdawalker/ds.names.orchestrator).
+**Current status:** Wiktionary, Wikidata, Behind the Name, Etymology Explorer, Wikimedia Enterprise and official statistics clients are implemented, alongside the research storage service and the root-research runner in [ds.names.orchestrator](https://github.com/lambdawalker/ds.names.orchestrator).
 
-All implemented source clients and the database expose agent MCP servers. See the [combined agent MCP setup guide](docs/agent-mcp-setup.md) for configuration, tool coverage, imported SSA/INSEE access and remaining live checks. Etymology Explorer now provides anonymous staging lookups, nine bounded MCP tools and managed local startup on port 4323. Wikimedia Enterprise remains an unimplemented placeholder.
+All implemented source clients and the database expose agent MCP servers. See the [combined agent MCP setup guide](docs/agent-mcp-setup.md) for configuration, tool coverage, imported SSA/INSEE access and remaining live checks. Etymology Explorer now provides anonymous staging lookups, nine bounded MCP tools and managed local startup on port 4323. Wikimedia Enterprise now adds authenticated article/metadata/snapshot access, 14 read-only MCP tools and managed local startup on port 4324 after account setup.
 
 ## Research storage service
 
@@ -23,13 +23,13 @@ through the storage API. The storage service does not fetch sources or run an LL
 
 ## Next development milestone
 
-Connect enrichment sources to the orchestrator's deliberately bounded research phases. Complete Behind the Name's key-gated live check and IBGE's availability-dependent live check, then implement the remaining credentialed clients from verified documentation. Existing source results preserve candidate status and provenance; having an MCP does not automatically enable every tool in the root-only runner.
+Connect enrichment sources to the orchestrator's deliberately bounded research phases. Complete Behind the Name's key-gated live check and IBGE's availability-dependent live check, then add optional demographics or Kaikki bulk ingestion where useful. Existing source results preserve candidate status and provenance; having an MCP does not automatically enable every tool in the root-only runner.
 
 ## Library boundaries
 
 | Repository | Responsibility |
 |---|---|
-| `names.api.wikimedia-enterprise` | Enterprise authentication and article/snapshot access; evaluate official SDK reuse before implementing a thin TypeScript client |
+| `names.api.wikimedia-enterprise` | Implemented thin TypeScript client with in-memory login/refresh, article/snapshot access, bounded MCP and YAML local API |
 | `names.api.wiktionary` | Official Wiktionary revision-aware Markdown evidence and WiktAPI structured lookups; future Kaikki bulk ingestion |
 | `names.api.wikidata` | Name identity, related entities, notable bearers and sourced facts |
 | `names.api.behindthename` | Lookup and related forms; no unsupported meaning/history extraction |
