@@ -1,5 +1,18 @@
 # Name Research Implementation Plan
 
+## Approved storage architecture update
+
+The graph-first service architecture supersedes the original SQLite-only storage
+proposal and any in-process storage ownership described below. Shared TypeScript
+contracts, normalized Markdown source documents, validated incremental findings,
+SQL journaling/outbox and Neo4j graph queries now live in
+[names.research.store](https://github.com/lambdawalker/names.research.store), with
+implementation in [PR #1](https://github.com/lambdawalker/names.research.store/pull/1).
+HTTP and MCP share the service's operations. The SQL journal is the recovery
+authority; graph projection is eventually consistent. This repo owns the future
+source integration, credential wizard and LLM/Harness orchestration. Source
+libraries remain independent of both the model and the storage service.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Deliver reusable source clients and an evidence-based, resumable name-research runner.

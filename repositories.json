@@ -35,6 +35,11 @@
       "name": "names.api.demographics",
       "description": "Optional TypeScript clients for Agify, Genderize and Nationalize; statistical estimates with explicit uncertainty.",
       "optional": true
+    },
+    {
+      "name": "names.research.store",
+      "description": "TypeScript research storage service: Neo4j graph, SQLite journal/cache, Markdown evidence, HTTP API and MCP.",
+      "optional": false
     }
   ]
 }
