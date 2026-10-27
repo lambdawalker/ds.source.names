@@ -6,7 +6,7 @@ data to a DeepSeek Harness orchestrator using a local model.
 
 **Current status:** Wiktionary, Wikidata, Behind the Name and official statistics clients are implemented, alongside the research storage service and the root-research runner in [ds.names.orchestrator](https://github.com/lambdawalker/ds.names.orchestrator).
 
-All implemented source clients and the database expose agent MCP servers. See the [combined agent MCP setup guide](docs/agent-mcp-setup.md) for configuration, tool coverage, imported SSA/INSEE access and remaining live checks. Wikimedia Enterprise and Etymology Explorer remain unimplemented placeholders.
+All implemented source clients and the database expose agent MCP servers. See the [combined agent MCP setup guide](docs/agent-mcp-setup.md) for configuration, tool coverage, imported SSA/INSEE access and remaining live checks. Etymology Explorer now provides anonymous staging lookups, nine bounded MCP tools and managed local startup on port 4323. Wikimedia Enterprise remains an unimplemented placeholder.
 
 ## Research storage service
 
@@ -33,7 +33,7 @@ Connect enrichment sources to the orchestrator's deliberately bounded research p
 | `names.api.wiktionary` | Official Wiktionary revision-aware Markdown evidence and WiktAPI structured lookups; future Kaikki bulk ingestion |
 | `names.api.wikidata` | Name identity, related entities, notable bearers and sourced facts |
 | `names.api.behindthename` | Lookup and related forms; no unsupported meaning/history extraction |
-| `names.api.etymology-explorer` | Vanguard client after actual API documentation is available |
+| `names.api.etymology-explorer` | Implemented anonymous Vanguard client, nine MCP reads and local API on port 4323 |
 | `names.data.statistics` | SSA/INSEE dataset importers and IBGE API adapter |
 | `names.api.demographics` (optional) | Agify/Genderize/Nationalize estimates, explicitly distinguished from census counts |
 
