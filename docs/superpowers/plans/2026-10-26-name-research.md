@@ -86,7 +86,8 @@ redistributable; do not commit captured private credentials or licensed text.
 - [x] Write regression tests for dry-run, optional selection, invalid names, account mismatch, existing repositories, 403/network failure and creation failure.
 - [x] Implement Python bootstrap with explicit --apply, auth check, 404-only creation, stop-on-error and rerun support.
 - [x] Verify with `python -m unittest discover -s tests -v` and dry-run the real manifest.
-- [ ] User runs bootstrap on their computer; verify the created repositories through the GitHub connector.
+- [x] User created all six required repositories; access verified through the GitHub connector. Optional demographics repository was not created.
+- [x] Remove the completed one-time script and its tests at the user's request; retain repositories.json as the inventory.
 
 ### Task 1: Canonical contracts and client packaging
 
@@ -213,7 +214,7 @@ count/value, suppression/rounding notes, source locator and release version.
 
 ## Immediate handoff
 
-Run the bootstrap locally, then report completion. The next independent deliverable
-is Task 1 plus the Wiktionary client. Work on free sources can proceed while
+Repository setup is complete. The next independent deliverable is Task 1 plus
+the Wiktionary client. Work on free sources can proceed while
 Etymology Explorer documentation is obtained. No live API or local-GPU claim is
 considered verified until its explicit smoke test or benchmark has run.
