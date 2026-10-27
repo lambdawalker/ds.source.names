@@ -4,13 +4,9 @@ Evidence-based research on personal-name origins, historical forms, borrowing,
 notable bearers and population usage. TypeScript libraries will expose source
 data to a DeepSeek Harness orchestrator using a local model.
 
-**Current status:** the storage service is implemented and merged. The first
-source client is implemented for review in
-[names.api.wiktionary PR #1](https://github.com/lambdawalker/names.api.wiktionary/pull/1).
-The research runner, remaining source clients and encrypted credential wizard
-are not implemented yet. The one-time repository creation script and its tests
-have been removed; [repositories.json](repositories.json) remains the repository inventory.
-The optional demographics repository has not been created.
+**Current status:** Wiktionary, Wikidata, Behind the Name and official statistics clients are implemented, alongside the research storage service and the root-research runner in [ds.names.orchestrator](https://github.com/lambdawalker/ds.names.orchestrator).
+
+All implemented source clients and the database expose agent MCP servers. See the [combined agent MCP setup guide](docs/agent-mcp-setup.md) for configuration, tool coverage, imported SSA/INSEE access and remaining live checks. Wikimedia Enterprise and Etymology Explorer remain unimplemented placeholders.
 
 ## Research storage service
 
@@ -27,20 +23,7 @@ through the storage API. The storage service does not fetch sources or run an LL
 
 ## Next development milestone
 
-1. Review and merge the Wiktionary client PR: official revision-aware Markdown evidence and complementary WiktAPI lookups.
-2. Wire the client to the storage service in this repository for a resumable per-name research pilot.
-3. Add Wikidata for notable bearers, followed by credentialed sources and statistics.
-4. Build the encrypted setup wizard and Harness orchestration against the storage service.
-
-The client passed a live John lookup and real authenticated storage compatibility
-check, including Markdown deduplication and fragment retrieval after restart.
-WiktAPI's inspected responses omit etymology fields, so official Wiktionary pages
-supply etymology evidence. Direct streaming Kaikki bulk ingestion remains future
-work; it is not required for the first API-driven pilot.
-
-No credentials are needed for the first milestone. Etymology Explorer remains
-blocked on verified Vanguard API documentation. Model selection comes after we
-have an evidence-based benchmark; no GPU model has been selected or tested yet.
+Connect enrichment sources to the orchestrator's deliberately bounded research phases. Complete Behind the Name's key-gated live check and IBGE's availability-dependent live check, then implement the remaining credentialed clients from verified documentation. Existing source results preserve candidate status and provenance; having an MCP does not automatically enable every tool in the root-only runner.
 
 ## Library boundaries
 
