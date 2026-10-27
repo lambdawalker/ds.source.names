@@ -1,0 +1,40 @@
+{
+  "owner": "lambdawalker",
+  "repositories": [
+    {
+      "name": "names.api.wikimedia-enterprise",
+      "description": "Typed Wikimedia Enterprise client adapter for evidence-based name research; integrates the official SDK where practical.",
+      "optional": false
+    },
+    {
+      "name": "names.api.wiktionary",
+      "description": "TypeScript client for WiktAPI and Kaikki lexical data, preserving etymologies, language identity and source provenance.",
+      "optional": false
+    },
+    {
+      "name": "names.api.wikidata",
+      "description": "TypeScript Wikidata client for name entities, variants, notable bearers and sourced biographical facts.",
+      "optional": false
+    },
+    {
+      "name": "names.api.behindthename",
+      "description": "TypeScript Behind the Name API client for name lookup and related forms, with rate limiting and credential redaction.",
+      "optional": false
+    },
+    {
+      "name": "names.api.etymology-explorer",
+      "description": "Planned TypeScript Etymology Explorer Vanguard client; implementation requires verified provider API documentation.",
+      "optional": false
+    },
+    {
+      "name": "names.data.statistics",
+      "description": "TypeScript adapters for official name statistics: SSA and INSEE downloads plus the IBGE Names API.",
+      "optional": false
+    },
+    {
+      "name": "names.api.demographics",
+      "description": "Optional TypeScript clients for Agify, Genderize and Nationalize; statistical estimates with explicit uncertainty.",
+      "optional": true
+    }
+  ]
+}
