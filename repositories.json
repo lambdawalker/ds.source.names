@@ -8,7 +8,7 @@
     },
     {
       "name": "names.api.wiktionary",
-      "description": "TypeScript client for WiktAPI and Kaikki lexical data, preserving etymologies, language identity and source provenance.",
+      "description": "TypeScript clients for revision-aware Wiktionary Markdown evidence and complementary WiktAPI structured lookups; future Kaikki bulk ingestion.",
       "optional": false
     },
     {

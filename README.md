@@ -4,16 +4,19 @@ Evidence-based research on personal-name origins, historical forms, borrowing,
 notable bearers and population usage. TypeScript libraries will expose source
 data to a DeepSeek Harness orchestrator using a local model.
 
-**Current status:** the six core companion repositories have been created and
-access verified. The research runner, API clients and encrypted credential wizard
+**Current status:** the storage service is implemented and merged. The first
+source client is implemented for review in
+[names.api.wiktionary PR #1](https://github.com/lambdawalker/names.api.wiktionary/pull/1).
+The research runner, remaining source clients and encrypted credential wizard
 are not implemented yet. The one-time repository creation script and its tests
 have been removed; [repositories.json](repositories.json) remains the repository inventory.
 The optional demographics repository has not been created.
 
 ## Research storage service
 
-The approved graph-first architecture is implemented for review in
-[names.research.store PR #1](https://github.com/lambdawalker/names.research.store/pull/1).
+The approved graph-first architecture is implemented in
+[names.research.store](https://github.com/lambdawalker/names.research.store)
+([merged PR #1](https://github.com/lambdawalker/names.research.store/pull/1)).
 That repository owns the shared TypeScript contracts, Neo4j graph projection,
 SQLite finding journal/search cache, normalized Markdown evidence and HTTP/MCP
 interfaces. This repository remains the source-client integration and future
@@ -24,11 +27,16 @@ through the storage API. The storage service does not fetch sources or run an LL
 
 ## Next development milestone
 
-1. Review the implemented TypeScript contracts and storage API in `names.research.store`.
-2. Implement the Wiktionary client and streaming Kaikki reader in the companion repository.
-3. Verify real name lookups and preserve sources, historical forms and uncertainty.
-4. Add Wikidata for notable bearers, followed by credentialed sources and statistics.
-5. Build the encrypted setup wizard and Harness orchestration against the storage service.
+1. Review and merge the Wiktionary client PR: official revision-aware Markdown evidence and complementary WiktAPI lookups.
+2. Wire the client to the storage service in this repository for a resumable per-name research pilot.
+3. Add Wikidata for notable bearers, followed by credentialed sources and statistics.
+4. Build the encrypted setup wizard and Harness orchestration against the storage service.
+
+The client passed a live John lookup and real authenticated storage compatibility
+check, including Markdown deduplication and fragment retrieval after restart.
+WiktAPI's inspected responses omit etymology fields, so official Wiktionary pages
+supply etymology evidence. Direct streaming Kaikki bulk ingestion remains future
+work; it is not required for the first API-driven pilot.
 
 No credentials are needed for the first milestone. Etymology Explorer remains
 blocked on verified Vanguard API documentation. Model selection comes after we
@@ -39,7 +47,7 @@ have an evidence-based benchmark; no GPU model has been selected or tested yet.
 | Repository | Responsibility |
 |---|---|
 | `names.api.wikimedia-enterprise` | Enterprise authentication and article/snapshot access; evaluate official SDK reuse before implementing a thin TypeScript client |
-| `names.api.wiktionary` | WiktAPI lookups and Kaikki JSONL ingestion, preserving etymology evidence |
+| `names.api.wiktionary` | Official Wiktionary revision-aware Markdown evidence and WiktAPI structured lookups; future Kaikki bulk ingestion |
 | `names.api.wikidata` | Name identity, related entities, notable bearers and sourced facts |
 | `names.api.behindthename` | Lookup and related forms; no unsupported meaning/history extraction |
 | `names.api.etymology-explorer` | Vanguard client after actual API documentation is available |
